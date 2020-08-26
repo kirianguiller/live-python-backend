@@ -1,5 +1,5 @@
 var express = require("express");
-var path = require("path");
+// var path = require("path");
 // var io = require("socket.io");
 var bodyParser = require("body-parser");
 var cors = require("cors")
@@ -24,7 +24,7 @@ var http = require("http").createServer(app);
 // var io = require("socket.io")(http);
 const io = require("./server/util/socket.js").init(http);
 
-app.use(express.static(path.join(__dirname, "dist")));
+// app.use(express.static(path.join(__dirname, "dist")));
 // Middleware for serving '/dist' directory
 const staticFileMiddleware = express.static("dist");
 // const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
@@ -51,7 +51,7 @@ app.use("/api/room", roomRoutes);
 // });
 
 // 1st call for unredirected requests
-app.use(staticFileMiddleware);
+// app.use(staticFileMiddleware);
 
 // Support history api
 // app.use(
@@ -60,13 +60,13 @@ app.use(staticFileMiddleware);
 //   })
 // );
 
-app.get(/.*/, (req, res) => {
-  if (!req.path.startsWith("/api")) {
-    // } else {
-    console.log("KK this is a call for the frontend");
-    res.sendFile(path.resolve(__dirname, "dist/index.html"));
-  }
-});
+// app.get(/.*/, (req, res) => {
+//   if (!req.path.startsWith("/api")) {
+//     // } else {
+//     console.log("KK this is a call for the frontend");
+//     res.sendFile(path.resolve(__dirname, "dist/index.html"));
+//   }
+// });
 
 // 2nd call for redirected requests
 // app.use(staticFileMiddleware);
