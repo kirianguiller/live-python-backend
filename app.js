@@ -1,10 +1,16 @@
-console.log("this first log work")
-
 var express = require("express");
 var path = require("path");
 // var io = require("socket.io");
-
 var bodyParser = require("body-parser");
+
+var cors = require("cors")
+
+var corsOptions = {
+  origin: 'http://example.com',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors())
 
 // var history = require("connect-history-api-fallback");
 
@@ -130,7 +136,7 @@ mongoConnect(() => {
       }
     });
   });
-  const PORT = process.env.PORT || 3123;
+  const PORT = process.env.PORT || 3000;
   http.listen(PORT, () => {
     console.log("listening on *:", PORT);
   });
