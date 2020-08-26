@@ -3,14 +3,12 @@ var path = require("path");
 // var io = require("socket.io");
 var bodyParser = require("body-parser");
 
-var cors = require("cors")
 
 var corsOptions = {
   origin: 'http://example.com',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-app.use(cors())
 
 // var history = require("connect-history-api-fallback");
 
@@ -19,6 +17,7 @@ const mongoConnect = require("./server/util/database.js").mongoConnect;
 const roomRoutes = require("./server/routes/room.js");
 
 var app = express();
+app.use(cors())
 var http = require("http").createServer(app);
 
 // var io = require("socket.io")(http);
