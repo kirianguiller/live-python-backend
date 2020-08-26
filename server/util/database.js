@@ -1,4 +1,6 @@
 const mongodb = require("mongodb");
+var cors = require("cors")
+
 const MongoClient = mongodb.MongoClient;
 
 let _db;
