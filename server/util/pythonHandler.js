@@ -20,13 +20,17 @@ module.exports = function (codeInput) {
       };
       const python = spawn("python3", ["codeToRun.py"]);
       python.stdout.on("data", function (stdout) {
-        results.codeOutput = stdout.toString();
-        console.log("KK codeOutput ", results)
+        console.log("KK stdout", stdout, typeof stdout)
+        if (typeof results.codeOutput != "undefined") {
+          results.codeOutput += stdout.toString();
+          console.log("KK codeOutput ", results);
+        } else {
+          results.codeOutput = stdout.toString();
+        }
       });
       python.stderr.on("data", function (stderr) {
-        results.codeError = stderr.toString();
-        console.log("KK codeError ", results)
-
+        results.codeError += stderr.toString();
+        console.log("KK codeError ", results);
       });
       python.on("close", (code) => {
         console.log(`child process close all stdio with code ${code}`);
