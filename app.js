@@ -121,10 +121,14 @@ mongoConnect(() => {
 
     // watch for code to run
     socket.on("runCode", ({codeInput, roomId}) => {
+
       console.log("KK codeOutput", codeInput);
-      pythonHandler(codeInput).then(({codeOutput, codeError}) => {
-        console.log("KK promise", codeOutput, codeError);
-        io.in(roomId).emit("codeOutput", { codeOutput, codeError });
+      
+      const timeStart = new Date().getTime()
+      pythonHandler(codeInput).then(({stdout, stderr}) => {
+        console.log("KK promise", stdout, stderr);
+        const executionTime = new Date().getTime() - timeStart
+        io.in(roomId).emit("codeOutput", { stdout, stderr, userId: socket.id, timeStart, executionTime });
       });
     });
 

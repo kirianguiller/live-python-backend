@@ -1,36 +1,44 @@
 const { spawn } = require("child_process");
 const fs = require("fs");
 
+TIMEOUT = 2000
+
+// TODO : - add  timer handler for avoiding infinite loop
 module.exports = function (codeInput) {
   const promise = new Promise((resolve, reject) => {
-    // clearTimeout(timeoutHandle);
-    // timeoutHandle(socket);
     console.log("codeToRun", codeInput);
+    var stdout;
+    var stderr;
+    const results = {
+      stdout,
+      stderr,
+    };
+
+  setTimeout(()=> {
+
+    results.stderr = `ERROR : timout of ${TIMEOUT} milliseconds reached`
+    resolve(results)}, TIMEOUT);
 
     fs.writeFile("codeToRun.py", codeInput, function (err) {
       if (err) {
         return console.log(err);
       }
 
-      var codeOutput;
-      var codeError;
-      const results = {
-        codeOutput,
-        codeError,
-      };
+
+
       const python = spawn("python3", ["codeToRun.py"]);
       python.stdout.on("data", function (stdout) {
-        console.log("KK stdout", stdout, typeof stdout)
-        if (typeof results.codeOutput != "undefined") {
-          results.codeOutput += stdout.toString();
-          console.log("KK codeOutput ", results);
+        // this if/else statetement is use for fixing the stdout dislocation behavior that ...
+        // ... happens sometimes.
+        // TODO : - try to find a way to have this whole code in one line
+        if (typeof results.stdout === "undefined") {
+          results.stdout = stdout.toString();
         } else {
-          results.codeOutput = stdout.toString();
+          results.stdout += stdout.toString();
         }
       });
       python.stderr.on("data", function (stderr) {
-        results.codeError += stderr.toString();
-        console.log("KK codeError ", results);
+        results.stderr += stderr.toString();
       });
       python.on("close", (code) => {
         console.log(`child process close all stdio with code ${code}`);
